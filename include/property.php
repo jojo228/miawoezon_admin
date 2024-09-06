@@ -365,53 +365,109 @@ $h = new Estate();
 }
 else if($_POST['type'] == 'edit_setting')
 {
-$webname = mysqli_real_escape_string($rstate,$_POST['webname']);
-			$timezone = $_POST['timezone'];
-			$currency = $_POST['currency'];
-			$id = $_POST['id'];
-			
-			$wlimit = $_POST['wlimit'];
-			$one_key = $_POST['one_key'];
-			$one_hash = $_POST['one_hash'];
-			
-			$scredit = $_POST['scredit'];
-			$rcredit =$_POST['rcredit'];
-			
-			
-			$target_dir = dirname( dirname(__FILE__) )."/images/website/";
-			$url = "images/website/";
-			$temp = explode(".", $_FILES["weblogo"]["name"]);
-$newfilename = round(microtime(true)) . '.' . end($temp);
-$target_file = $target_dir . basename($newfilename);
-$url = $url . basename($newfilename);
-if($_FILES["weblogo"]["name"] != '')
-{
+            $webname = mysqli_real_escape_string($rstate, $_POST['webname']);
+            $timezone = mysqli_real_escape_string($rstate, $_POST['timezone']);
+            $currency = mysqli_real_escape_string($rstate, $_POST['currency']);
+            $tax = floatval($_POST['tax']);
+            $sms_type = mysqli_real_escape_string($rstate, $_POST['sms_type']);
+            $auth_key = mysqli_real_escape_string($rstate, $_POST['auth_key']);
+            $otp_id = mysqli_real_escape_string($rstate, $_POST['otp_id']);
+            $acc_id = mysqli_real_escape_string($rstate, $_POST['acc_id']);
+            $auth_token = mysqli_real_escape_string($rstate, $_POST['auth_token']);
+            $twilio_number = mysqli_real_escape_string($rstate, $_POST['twilio_number']);
+            $otp_auth = mysqli_real_escape_string($rstate, $_POST['otp_auth']);
+            $show_property = mysqli_real_escape_string($rstate, $_POST['show_property']);
+            $one_key = mysqli_real_escape_string($rstate, $_POST['one_key']);
+            $one_hash = mysqli_real_escape_string($rstate, $_POST['one_hash']);
+            $scredit = intval($_POST['scredit']);
+            $rcredit = intval($_POST['rcredit']);
+            $wlimit = intval($_POST['wlimit']);
+            $id = intval($_POST['id']);
 
-	move_uploaded_file($_FILES["weblogo"]["tmp_name"], $target_file);
-	$table="tbl_setting";
-  $field = array('timezone'=>$timezone,'weblogo'=>$url,'webname'=>$webname,'currency'=>$currency,'one_key'=>$one_key,'one_hash'=>$one_hash,'scredit'=>$scredit,'rcredit'=>$rcredit,'wlimit'=>$wlimit);
-  $where = "where id=".$id."";
-$h = new Estate();
-	  $check = $h->restateupdateData($field,$table,$where);
-  
-	  if($check == 1)
-{
-	$returnArr = array("ResponseCode"=>"200","Result"=>"true","title"=>"Setting Update Successfully!!","message"=>"Setting section!","action"=>"setting.php");
-}
-}
-else 
-{
-	$table="tbl_setting";
-  $field = array('timezone'=>$timezone,'webname'=>$webname,'currency'=>$currency,'one_key'=>$one_key,'one_hash'=>$one_hash,'scredit'=>$scredit,'rcredit'=>$rcredit,'wlimit'=>$wlimit);
-  $where = "where id=".$id."";
-$h = new Estate();
-	  $check = $h->restateupdateData($field,$table,$where);
-	  if($check == 1)
-{
-	$returnArr = array("ResponseCode"=>"200","Result"=>"true","title"=>"Setting Update Successfully!!","message"=>"Offer section!","action"=>"setting.php");
-}
 
-}	
+            $field = array(
+                'webname' => $webname,
+                'timezone' => $timezone,
+                'currency' => $currency,
+                'tax' => $tax,
+                'sms_type' => $sms_type,
+                'auth_key' => $auth_key,
+                'otp_id' => $otp_id,
+                'acc_id' => $acc_id,
+                'auth_token' => $auth_token,
+                'twilio_number' => $twilio_number,
+                'otp_auth' => $otp_auth,
+                'show_property' => $show_property,
+                'one_key' => $one_key,
+                'one_hash' => $one_hash,
+                'scredit' => $scredit,
+                'rcredit' => $rcredit,
+                'wlimit' => $wlimit
+            );
+			
+			
+			// Handle weblogo upload if a new file is provided
+            if (!empty($_FILES["weblogo"]["name"])) {
+                $target_dir = dirname(dirname(__FILE__)) . "/images/website/";
+                $url = "images/website/";
+                $temp = explode(".", $_FILES["weblogo"]["name"]);
+                $newfilename = round(microtime(true)) . '.' . strtolower(end($temp));
+                $target_file = $target_dir . basename($newfilename);
+                $url = $url . basename($newfilename);
+        
+                if (move_uploaded_file($_FILES["weblogo"]["tmp_name"], $target_file)) {
+                    error_log("WeBlogo uploaded successfully: " . $url);
+                    $field['weblogo'] = $url;
+                } else {
+                    error_log("Failed to upload weblogo file.");
+                    // Optionally, add an error message to $returnArr
+                    $returnArr = array(
+                        "ResponseCode" => "400",
+                        "Result" => "false",
+                        "title" => "Upload Failed!",
+                        "message" => "Failed to upload weblogo.",
+                        "action" => "setting.php"
+                    );
+                    echo json_encode($returnArr);
+                    exit();
+                }
+            }
+
+            // Log fields to be updated
+            error_log("Fields to Update: " . print_r($field, true));
+
+            // Define table and where clause
+            $table = "tbl_setting";
+            $where = "WHERE id = " . $id;
+
+            // Create Estate instance and perform the update
+            $h = new Estate();
+            $check = $h->restateupdateData($field, $table, $where);
+
+            // Check if the update was successful
+            if ($check == 1) {
+                error_log("Database updated successfully for id: " . $id);
+                $returnArr = array(
+                    "ResponseCode" => "200",
+                    "Result" => "true",
+                    "title" => "Setting Update Successfully!!",
+                    "message" => "Setting section!",
+                    "action" => "setting.php"
+                );
+            } else {
+                error_log("Database update failed for id: " . $id);
+                $returnArr = array(
+                    "ResponseCode" => "500",
+                    "Result" => "false",
+                    "title" => "Update Failed!",
+                    "message" => "There was an error updating the settings.",
+                    "action" => "setting.php"
+                );
+            }
+
+            // Return the response
+            echo json_encode($returnArr);
+            exit();
 }
 
 	elseif ($_POST["type"] == "add_category") {
