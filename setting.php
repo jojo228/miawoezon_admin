@@ -130,7 +130,7 @@ if($_SESSION['stype'] == 'Staff')
 										
 										
 										<div class="form-group mb-3 col-12">
-										<h5 class="h5_set"><i class="fas fa-sms"></i> Twilio Sms Configurations </h5>
+										<h5 class="h5_set"><i class="fas fa-sms"></i> Twilio Sms Configuration </h5>
 										</div>
 										
 										<div class="form-group mb-3 col-4">
