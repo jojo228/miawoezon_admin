@@ -406,7 +406,7 @@ else if($_POST['type'] == 'edit_setting')
             );
 			
 			
-			// Handle weblogo upload if a new file is provided
+			// Handle weblogo upload if a new file is provided.
             if (!empty($_FILES["weblogo"]["name"])) {
                 $target_dir = dirname(dirname(__FILE__)) . "/images/website/";
                 $url = "images/website/";
