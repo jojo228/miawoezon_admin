@@ -1,10 +1,10 @@
 <?php
 require dirname(dirname(__FILE__)) . '/include/reconfig.php';
 require dirname(dirname(__FILE__)) . '/include/estate.php';
-header('Content-type: text/json');
+header('Content-type: application/json');
 $data = json_decode(file_get_contents('php://input'), true);
 
-if ($data['uid'] == '' or $data['plan_id'] == '' or $data['transaction_id'] == '' or $data['pname'] == '') {
+if (!isset($data['uid']) || !isset($data['plan_id']) || !isset($data['transaction_id']) || !isset($data['pname'])) {
     $returnArr = array(
         "ResponseCode" => "401",
         "Result" => "false",
