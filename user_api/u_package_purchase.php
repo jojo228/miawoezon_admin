@@ -3,15 +3,9 @@ require dirname(dirname(__FILE__)) . '/include/reconfig.php';
 require dirname(dirname(__FILE__)) . '/include/estate.php';
 header('Content-Type: application/json'); // Correct MIME type for JSON
 
-// Enable error reporting for debugging (disable in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// Decode the incoming JSON data
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Validate that all required fields are present
+// Check if all required fields are present and not null
 if (
     !isset($data['uid']) ||
     !isset($data['plan_id']) ||
@@ -19,7 +13,7 @@ if (
     !isset($data['pname'])
 ) {
     $returnArr = array(
-        "ResponseCode" => "400",
+        "ResponseCode" => "400", // 400 Bad Request is more appropriate
         "Result" => "false",
         "ResponseMsg" => "Missing required fields!"
     );
@@ -27,7 +21,7 @@ if (
     // Extract and sanitize input data
     $uid = intval($data['uid']);
     $plan_id = intval($data['plan_id']);
-    $transaction_id = $data['transaction_id']; // Can be 0 or a valid transaction ID
+    $transaction_id = $data['transaction_id']; // Keep as is; can be string or int based on your logic
     $pname = htmlspecialchars($data['pname']); // Prevent XSS
 
     // Additional validation
