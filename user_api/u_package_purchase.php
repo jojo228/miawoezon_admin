@@ -43,11 +43,29 @@ $data = json_decode(file_get_contents('php://input'), true);
 				$h     = new Estate();
                 $check = $h->restateinsertdata_Api($field_values, $data_values, $table);
 				
-				$table="tbl_user";
+  $table="tbl_user";
   $field = array('start_date'=>$current_date,'end_date'=>$till_date,'pack_id'=>$plan_id,'is_subscribe'=>'1');
   $where = "where id=".$uid."";
-$h = new Estate();
-	 $check = $h->restateupdateData_Api($field,$table,$where);
+  $h = new Estate();
+  $check = $h->restateupdateData_Api($field,$table,$where);
+  if ($check == 1) {
+	$returnArr = [
+		"ResponseCode" => "200",
+		"Result" => "true",
+		"ResponseMsg" => "User Updated Successfully!!",
+	
+	];
+  } else {
+		$returnArr = [
+			"ResponseCode" => "400",
+			"Result" => "false",
+			"ResponseMsg" => "User Not Updated!",
+		
+		];
+	  
+  }
+
+
 	 
 	 $titles = $fetch['title'];
 	 $amount = $fetch['price'];

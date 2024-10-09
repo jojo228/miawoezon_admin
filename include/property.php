@@ -597,7 +597,7 @@ else if($_POST['type'] == 'edit_setting')
             
         } else {
             $table = "tbl_package";
-            $field = ["status" => $status, "title" => $title,"description"=>$description,"day"=>$day,"price"=>$price];
+            $field = ["status" => $status, "image" => $url, "title" => $title,"description"=>$description,"day"=>$day,"price"=>$price];
             $where = "where id=" . $id . "";
             $h = new Estate();
             $check = $h->restateupdateData($field, $table, $where);
