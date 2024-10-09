@@ -4,12 +4,15 @@ require dirname(dirname(__FILE__)) . '/include/estate.php';
 header('Content-type: text/json');
 $data = json_decode(file_get_contents('php://input'), true);
 
-if ($data['uid'] == '' or $data['plan_id'] == '' or $data['transaction_id'] == '' or $data['pname'] == '') {
+if (!isset($data['uid'], $data['plan_id'], $data['transaction_id'], $data['pname'])) {
     $returnArr = array(
-        "ResponseCode" => "401",
+        "ResponseCode" => "400",
         "Result" => "false",
-        "ResponseMsg" => "Something Went Wrong!"
+        "ResponseMsg" => "Missing required fields!"
     );
+    echo json_encode($returnArr);
+    exit();
+	
 } else {
 	$plan_id = $data['plan_id'];
 	$transaction_id = $data['transaction_id'];
