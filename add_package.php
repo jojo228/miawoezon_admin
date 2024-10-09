@@ -106,7 +106,7 @@ if ($_SESSION['stype'] == 'Staff' && !in_array('Write', $package_per)) {
                                         
 										<div class="form-group mb-3">
                                             <label>Package Image</label>
-                                            <input type="file" class="form-control" name="image"  >
+                                            <input type="file" class="form-control" name="cat_img"  >
 											 <input type="hidden" name="type" value="edit_package"/>
 											 <br>
 											<img src="<?php echo $data['image']?>" width="100px"/>
@@ -165,7 +165,7 @@ if ($_SESSION['stype'] == 'Staff' && !in_array('Write', $package_per)) {
                                         
 										<div class="form-group mb-3">
                                             <label>Package Image</label>
-                                            <input type="file" class="form-control" name="image"  required="">
+                                            <input type="file" class="form-control" name="cat_img"  required="">
 											<input type="hidden" name="type" value="add_package"/>
                                         </div>
 										
