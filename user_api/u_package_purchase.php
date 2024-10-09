@@ -12,7 +12,7 @@ if (!isset($data['uid'], $data['plan_id'], $data['transaction_id'], $data['pname
     );
     echo json_encode($returnArr);
     exit();
-	
+
 } else {
 	$plan_id = $data['plan_id'];
 	$transaction_id = $data['transaction_id'];
@@ -45,7 +45,7 @@ if (!isset($data['uid'], $data['plan_id'], $data['transaction_id'], $data['pname
   $field = array('start_date'=>$current_date,'end_date'=>$till_date,'pack_id'=>$plan_id,'is_subscribe'=>'1');
   $where = "where id=".$uid."";
 $h = new Estate();
-	 $check = $h->restateupdateData_Api($field,$table,$where,array($uid));
+	 $check = $h->restateupdateData_Api($field,$table,$where);
 	 
 	 $titles = $fetch['title'];
 	 $amount = $fetch['price'];
