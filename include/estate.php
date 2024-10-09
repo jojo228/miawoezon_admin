@@ -85,7 +85,19 @@ $result=$GLOBALS['rstate']->query($sql);
   
   
   
-  
+  function restateupdateData_Api($field,$table,$where){
+    $cols = array();
+    
+        foreach($field as $key=>$val) {
+            if($val != NULL) // check if value is not null then only add that colunm to array
+            {
+               $cols[] = "$key = '$val'"; 
+            }
+        }
+        $sql = "UPDATE $table SET " . implode(', ', $cols) . " $where";
+    $result=$GLOBALS['rstate']->query($sql);
+        return $result;
+      }
   
   
   
