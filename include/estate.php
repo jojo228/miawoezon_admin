@@ -1,110 +1,137 @@
-<?php
+<?php 
 require 'reconfig.php';
-
+$GLOBALS['rstate'] = $rstate;
 class Estate {
-    private $conn;
+ 
 
-    // Constructor to initialize the connection
-    public function __construct() {
-        $this->conn = $GLOBALS['rstate'];
-    }
+	function restatelogin($username,$password,$tblname) {
+		if($tblname == 'admin')
+		{
+		$q = "select * from ".$tblname." where username='".$username."' and password='".$password."'";
+	return $GLOBALS['rstate']->query($q)->num_rows;
+		}
+		else if($tblname == 'restate_details')
+		{
+			$q = "select * from ".$tblname." where email='".$username."' and password='".$password."'";
+	return $GLOBALS['rstate']->query($q)->num_rows;
+		}
+		else 
+		{
+			$q = "select * from ".$tblname." where email='".$username."' and password='".$password."' and status=1";
+	return $GLOBALS['rstate']->query($q)->num_rows;
+		}
+	}
+	
+	function restateinsertdata($field,$data,$table){
 
-    // Login function for different tables
-    function restatelogin($username, $password, $tblname) {
-        $q = "";
-        if ($tblname == 'admin') {
-            $q = "SELECT * FROM $tblname WHERE username='$username' AND password='$password'";
-        } else if ($tblname == 'restate_details') {
-            $q = "SELECT * FROM $tblname WHERE email='$username' AND password='$password'";
-        } else {
-            $q = "SELECT * FROM $tblname WHERE email='$username' AND password='$password' AND status=1";
+    $field_values= implode(',',$field);
+    $data_values=implode("','",$data);
+
+    $sql = "INSERT INTO $table($field_values)VALUES('$data_values')";
+    $result=$GLOBALS['rstate']->query($sql);
+  return $result;
+  }
+  
+  
+
+  
+ 
+  
+  function restateinsertdata_id($field,$data,$table){
+
+    $field_values= implode(',',$field);
+    $data_values=implode("','",$data);
+
+    $sql = "INSERT INTO $table($field_values)VALUES('$data_values')";
+    $result=$GLOBALS['rstate']->query($sql);
+  return $GLOBALS['rstate']->insert_id;
+  }
+  
+  function restateinsertdata_Api($field,$data,$table){
+
+    $field_values= implode(',',$field);
+    $data_values=implode("','",$data);
+
+    $sql = "INSERT INTO $table($field_values)VALUES('$data_values')";
+    $result=$GLOBALS['rstate']->query($sql);
+  return $result;
+  }
+  
+  function restateinsertdata_Api_Id($field,$data,$table){
+
+    $field_values= implode(',',$field);
+    $data_values=implode("','",$data);
+
+    $sql = "INSERT INTO $table($field_values)VALUES('$data_values')";
+    $result=$GLOBALS['rstate']->query($sql);
+  return $GLOBALS['rstate']->insert_id;
+  }
+  
+  function restateupdateData($field,$table,$where){
+$cols = array();
+
+    foreach($field as $key=>$val) {
+        if($val != NULL) // check if value is not null then only add that colunm to array
+        {
+			
+           $cols[] = "$key = '$val'"; 
+			
         }
-        return $this->conn->query($q)->num_rows;
     }
+    $sql = "UPDATE $table SET " . implode(', ', $cols) . " $where";
+$result=$GLOBALS['rstate']->query($sql);
+    return $result;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  function restateupdateDatanull_Api($field,$table,$where){
+$cols = array();
 
-    // Insert data into a table
-    function restateinsertdata($field, $data, $table) {
-        $field_values = implode(',', $field);
-        $data_values = implode("','", $data);
-        $sql = "INSERT INTO $table($field_values) VALUES ('$data_values')";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
-
-    // Insert data into a table and return the last inserted ID
-    function restateinsertdata_id($field, $data, $table) {
-        $field_values = implode(',', $field);
-        $data_values = implode("','", $data);
-        $sql = "INSERT INTO $table($field_values) VALUES ('$data_values')";
-        $result = $this->conn->query($sql);
-        return $this->conn->insert_id;
-    }
-
-    // Insert data using API
-    function restateinsertdata_Api($field, $data, $table) {
-        $field_values = implode(',', $field);
-        $data_values = implode("','", $data);
-        $sql = "INSERT INTO $table($field_values) VALUES ('$data_values')";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
-
-    // Insert data using API and return last inserted ID
-    function restateinsertdata_Api_Id($field, $data, $table) {
-        $field_values = implode(',', $field);
-        $data_values = implode("','", $data);
-        $sql = "INSERT INTO $table($field_values) VALUES ('$data_values')";
-        $result = $this->conn->query($sql);
-        return $this->conn->insert_id;
-    }
-
-    // Update data in a table
-    function restateupdateData($field, $table, $where) {
-        $cols = array();
-        foreach ($field as $key => $val) {
-            if ($val != NULL) {
-                $cols[] = "$key = '$val'";
-            }
+    foreach($field as $key=>$val) {
+        if($val != NULL) // check if value is not null then only add that colunm to array
+        {
+           $cols[] = "$key = '$val'"; 
         }
-        $sql = "UPDATE $table SET " . implode(', ', $cols) . " $where";
-        $result = $this->conn->query($sql);
-        return $result;
+		else 
+		{
+			$cols[] = "$key = NULL"; 
+		}
     }
+	
+ $sql = "UPDATE $table SET " . implode(', ', $cols) . " $where";
+$result=$GLOBALS['rstate']->query($sql);
+    return $result;
+  }
+  
+  
+  
+  function restateupdateData_single($field,$table,$where){
+$query = "UPDATE $table SET $field";
 
-    // Update data allowing NULL values
-    function restateupdateDatanull_Api($field, $table, $where) {
-        $cols = array();
-        foreach ($field as $key => $val) {
-            if ($val != NULL) {
-                $cols[] = "$key = '$val'";
-            } else {
-                $cols[] = "$key = NULL";
-            }
-        }
-        $sql = "UPDATE $table SET " . implode(', ', $cols) . " $where";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
+$sql =  $query.' '.$where;
+$result=$GLOBALS['rstate']->query($sql);
+  return $result;
+  }
+  
+  function restaterestateDeleteData($where,$table){
 
-    // Update single field
-    function restateupdateData_single($field, $table, $where) {
-        $sql = "UPDATE $table SET $field $where";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
+    $sql = "Delete From $table $where";
+    $result=$GLOBALS['rstate']->query($sql);
+  return $result;
+  }
+  
+  function restateDeleteData_Api($where,$table){
 
-    // Delete data from a table
-    function restaterestateDeleteData($where, $table) {
-        $sql = "DELETE FROM $table $where";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
-
-    // Delete data using API
-    function restateDeleteData_Api($where, $table) {
-        $sql = "DELETE FROM $table $where";
-        $result = $this->conn->query($sql);
-        return $result;
-    }
+    $sql = "Delete From $table $where";
+    $result=$GLOBALS['rstate']->query($sql);
+  return $result;
+  }
+ 
 }
 ?>

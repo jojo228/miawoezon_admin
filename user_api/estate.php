@@ -108,9 +108,32 @@ $result=$GLOBALS['rstate']->query($sql);
   
   
   
-  function restateupdateData_single($field,$table,$where){
-return 0;
-  }
+  function restateupdateData_single($field, $table, $where, $params) {
+    // Construct the SQL query to update a single field
+    $sql = "UPDATE $table SET $field $where";
+    
+    // Prepare the statement
+    $stmt = $GLOBALS['rstate']->prepare($sql);
+    
+    // Check if the preparation was successful
+    if (!$stmt) {
+        return false; // Return false if the preparation fails
+    }
+
+    // Bind the parameters dynamically (use "s" for strings and "i" for integers based on $params)
+    // This example assumes all parameters are integers. Adjust the types as needed.
+    $stmt->bind_param(str_repeat('i', count($params)), ...$params);
+
+    // Execute the statement
+    $result = $stmt->execute();
+    
+    // Close the statement
+    $stmt->close();
+    
+    // Return the result of the execution
+    return $result;
+}
+
   
   function restaterestateDeleteData($where,$table){
 
