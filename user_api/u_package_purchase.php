@@ -69,7 +69,7 @@ if ($uid <= 0 || $plan_id <= 0) {
 $h = new Estate();
 
 // Fetch the plan details from the database using prepared statements
-$stmt = $h->conn->prepare("SELECT * FROM tbl_package WHERE id = ?");
+$stmt = $GLOBALS['rstate']->prepare("SELECT * FROM tbl_package WHERE id = ?");
 if (!$stmt) {
     $returnArr = array(
         "ResponseCode" => "500",
@@ -130,7 +130,7 @@ $field = array(
     'pack_id' => $plan_id,
     'is_subscribe' => '1'
 );
-$where = "WHERE id = ?";
+$where = "id = ?";
 $check = $h->restateupdateData_Api($field, $table, $where, array($uid));
 
 if (!$check) {
@@ -188,7 +188,7 @@ if (!$check) {
 // Update property status
 $table = "tbl_property";
 $field = "status = 1";
-$where = "WHERE add_user_id = ?";
+$where = "id = ?";
 $check = $h->restateupdateData_single($field, $table, $where, array($uid));
 
 if (!$check) {
