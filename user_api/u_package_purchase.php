@@ -4,12 +4,7 @@ require dirname(dirname(__FILE__)) . '/include/estate.php';
 header('Content-type: text/json');
 $data = json_decode(file_get_contents('php://input'), true);
 
-(
-    !isset($data['uid']) ||
-    !isset($data['plan_id']) ||
-    !isset($data['transaction_id']) ||
-    !isset($data['pname'])
-) {
+if ($data['uid'] == '' or $data['plan_id'] == '' or $data['transaction_id'] == '' or $data['pname'] == '') {
     $returnArr = array(
         "ResponseCode" => "401",
         "Result" => "false",
@@ -43,34 +38,16 @@ $data = json_decode(file_get_contents('php://input'), true);
 				$h     = new Estate();
                 $check = $h->restateinsertdata_Api($field_values, $data_values, $table);
 				
-  $table="tbl_user";
+				$table="tbl_user";
   $field = array('start_date'=>$current_date,'end_date'=>$till_date,'pack_id'=>$plan_id,'is_subscribe'=>'1');
   $where = "where id=".$uid."";
-  $h = new Estate();
-  $check = $h->restateupdateData_Api($field,$table,$where);
-  if ($check == 1) {
-	$returnArr = [
-		"ResponseCode" => "200",
-		"Result" => "true",
-		"ResponseMsg" => "User Updated Successfully!!",
-	
-	];
-  } else {
-		$returnArr = [
-			"ResponseCode" => "400",
-			"Result" => "false",
-			"ResponseMsg" => "User Not Updated!",
-		
-		];
-	  
-  }
-
-
+$h = new Estate();
+	 $check = $h->restateupdateData_Api($field,$table,$where,array($uid));
 	 
 	 $titles = $fetch['title'];
 	 $amount = $fetch['price'];
 	 $day = $fetch['day'];
-	//  $plan_image = $fetch['image'];
+	 $plan_image = $fetch['image'];
 	 $plan_description = $fetch['description'];
 	 $table        = "plan_purchase_history";
 	$field_values = array(
@@ -85,7 +62,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 					"expire_date",
 					"start_date",
 					"trans_id",
-					// "plan_image"
+					"plan_image"
                 );
                 $data_values  = array(
                     "$uid",
@@ -99,7 +76,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 					"$till_date",
 					"$current_date",
 					"$transaction_id",
-					// "$plan_image"
+					"$plan_image"
 					
                 );
 				$h     = new Estate();
