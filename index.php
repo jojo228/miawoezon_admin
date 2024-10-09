@@ -22,7 +22,7 @@ else
               <div><a class="logo" href="#"><img class="img-fluid for-light" src="<?php echo $set['weblogo'];?>" alt="logo image"></a></div>
               <div class="login-main"> 
                 <form class="theme-form">
-                  <h2 class="text-center">Sign in to account</h2>
+                  <h2 class="text-center">Sign in to account ulrich</h2>
                   <p class="text-center">Enter your username & password to login</p>
                   <div class="form-group">
                     <label class="col-form-label">Username</label>
