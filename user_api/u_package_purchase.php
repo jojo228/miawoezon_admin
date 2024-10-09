@@ -41,7 +41,7 @@ if (!isset($data['uid'], $data['plan_id'], $data['transaction_id'], $data['pname
 				$h     = new Estate();
                 $check = $h->restateinsertdata_Api($field_values, $data_values, $table);
 				
-				$table="tbl_user";
+  $table="tbl_user";
   $field = array('start_date'=>$current_date,'end_date'=>$till_date,'pack_id'=>$plan_id,'is_subscribe'=>'1');
   $where = "where id=".$uid."";
 $h = new Estate();
@@ -50,7 +50,6 @@ $h = new Estate();
 	 $titles = $fetch['title'];
 	 $amount = $fetch['price'];
 	 $day = $fetch['day'];
-	 $plan_image = $fetch['image'];
 	 $plan_description = $fetch['description'];
 	 $table        = "plan_purchase_history";
 	$field_values = array(
@@ -65,7 +64,6 @@ $h = new Estate();
 					"expire_date",
 					"start_date",
 					"trans_id",
-					"plan_image"
                 );
                 $data_values  = array(
                     "$uid",
@@ -79,7 +77,6 @@ $h = new Estate();
 					"$till_date",
 					"$current_date",
 					"$transaction_id",
-					"$plan_image"
 					
                 );
 				$h     = new Estate();
