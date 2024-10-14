@@ -4,7 +4,7 @@ require dirname(dirname(__FILE__)) . '/include/estate.php';
 header('Content-type: text/json');
 $data = json_decode(file_get_contents('php://input'), true);
      
-	 $status = $data["status"];
+	    $status = $data["status"];
         $title = $rstate->real_escape_string($data["title"]);
 		$address = $rstate->real_escape_string($data["address"]);
 		$description = $rstate->real_escape_string($data["description"]);
@@ -26,7 +26,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 		$country_id = $data['country_id'];
 		$pbuysell = $data['pbuysell'];
 		
-if ($prop_id == '' or $pbuysell == '' or $country_id == '' or $plimit == '' or $user_id == '' or $status == '' or $title == '' or $address == '' or $description == '' or $ccount == '' or $facility == '' or $ptype == '' or $beds == '' or $bathroom == '' or $sqft == '' or $rate == '' or $latitude == '' or $mobile == '' or $listing_date == '' or $price == '') {
+if ($prop_id == '' or $pbuysell == '' or $country_id == '' or $plimit == '' or $user_id == '' or $status == '' or $title == '' or $address == '' or $description == '' or $ccount == '' or $facility == '' or $ptype == '' or $beds == '' or $bathroom == '' or $sqft == '' or $rate == '' or $latitude == '' or $longitude == '' or $mobile == '' or $listing_date == '' or $price == '') {
     $returnArr = array(
         "ResponseCode" => "401",
         "Result" => "false",
@@ -48,7 +48,7 @@ if($check_owner !=0)
 	else 
 	{
 		$img = $data['img'];
- $img = str_replace('data:image/png;base64,', '', $img);
+$img = str_replace('data:image/png;base64,', '', $img);
 $img = str_replace(' ', '+', $img);
 $data = base64_decode($img);
 $path = 'images/property/'.uniqid().'.png';
