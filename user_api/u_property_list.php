@@ -36,6 +36,9 @@ while($row = $sel->fetch_assoc())
 		$pol['mobile'] = $row['mobile'];
 		$pol['buyorrent'] = $row['pbuysell'];
 		$pol['city'] = $row['city'];
+		$pol['country_id'] = $row['country_id'];
+		$country = $rstate->query("SELECT title FROM tbl_country WHERE id=".$row['country_id']."")->fetch_assoc();
+    	$pol['country_title'] = $country['title']; // Add country title
 		$checkrate = $rstate->query("SELECT *  FROM tbl_book where prop_id=".$row['id']." and book_status='Completed' and total_rate !=0")->num_rows;
 		if($checkrate !=0)
 		{
