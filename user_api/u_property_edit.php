@@ -48,7 +48,7 @@ if($check_owner !=0)
 	else 
 	{
 		$img = $data['img'];
-$img = str_replace('data:image/png;base64,', '', $img);
+ $img = str_replace('data:image/png;base64,', '', $img);
 $img = str_replace(' ', '+', $img);
 $data = base64_decode($img);
 $path = 'images/property/'.uniqid().'.png';
